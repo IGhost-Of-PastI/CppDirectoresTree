@@ -128,7 +128,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DirectoresTree.cpp" />
     <ClCompile Include="DirectoresTreeTest.cpp" />
+    <ClCompile Include="DirectoryNode.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DirectoresTree.h" />
+    <ClInclude Include="DirectoryNode.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
