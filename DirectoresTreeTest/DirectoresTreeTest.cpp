@@ -1,5 +1,8 @@
 ﻿#include <iostream>  
-#include "rproperty.h"
+#include <filesystem>
+
+using namespace std;
+//#include "rproperty.h"
 /*#include <memory>  
 #include <list>  
 #include <filesystem>  
@@ -170,11 +173,42 @@ private:
         }
     }
 };*/
+#include "DirectoresTree.h"
 
 int main() {
-    Test test;
-    std::cout << test.field << std::endl;
-    std::cout << test.field2 << std::endl;
+    using namespace std::filesystem;
+    
+    DirectoresTree dirTree=current_path().parent_path().append("x64").append("Debug");
+
+    //path testfolder="TestFolder";
+
+    //if (is_directory(absolute(testfolder)) || exists(absolute(testfolder)))
+    //{
+    //    cout << testfolder << endl;
+    //    cout << absolute(testfolder) << endl;
+    //}
+
+
+
+    path currfolder = current_path().parent_path().append("x64");
+
+    cout << currfolder << endl;
+
+    recursive_directory_iterator rDirIter(currfolder);
+
+    for (const auto& entry : rDirIter)
+    {
+        
+        if (entry.is_directory())
+        {
+            path path1 = entry;
+            cout << path1.string()<< "\t" <<rDirIter.depth()<< endl;
+        }
+    }
+
+    //cout << testfolder << endl;
+    //cout << absolute(testfolder) << endl;
+
     //test.field = 1;
    // rproperty t;
 

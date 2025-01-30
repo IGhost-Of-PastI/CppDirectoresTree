@@ -4,12 +4,18 @@
 #include<memory>
 #include<optional>
 
-class DirectoryNode
+class DirectoriesTree;
+
+class DirectoryNode : public std::enable_shared_from_this<DirectoryNode>
 {
 public:
-	DirectoryNode(std::filesystem::path folder);
+    friend DirectoriesTree;
+    DirectoryNode(std::filesystem::path folder, std::weak_ptr<DirectoryNode> parent);
+    DirectoryNode& operator[](std::string folderName);
 private:
-	std::filesystem::path _currFolder;
-	std::optional<std::unordered_map<std::filesystem::path, std::shared_ptr<DirectoryNode>>> _childs;
+    void _LoadChilds();
+    std::filesystem::directory_entry _currFolder;
+    std::weak_ptr<DirectoryNode> _parent;
+    std::optional<std::unordered_map<std::string, std::shared_ptr<DirectoryNode>>> _childs;
 };
 

@@ -1,16 +1,18 @@
 #pragma once
-#include<memory>
-#include "DirectoryNode.h"
 
-class DirectoresTree
+#include "DirectoryNode.h"
+#include <filesystem>
+#include <memory>
+
+class DirectoriesTree
 {
 public:
-	DirectoresTree(std::filesystem::path rootDir);
-
-	//depth
-	void setRootDir(std::filesystem::path newRootDir);
-	DirectoryNode& operator[] (std::filesystem::path dir);
+    DirectoriesTree(std::filesystem::path rootDir = std::filesystem::current_path());
+    //depth
+    void setRootDir(std::filesystem::path newRootDir);
+    DirectoryNode& operator[] (std::filesystem::path dir);
 private:
-	std::shared_ptr<DirectoryNode> _rootNode;
+    std::shared_ptr<DirectoryNode> _rootNode;
+    std::shared_ptr<DirectoryNode> _selected;
 };
 
