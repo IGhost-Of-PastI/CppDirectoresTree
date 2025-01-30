@@ -39,6 +39,10 @@ inline std::filesystem::path DirectoriesTree<D, defaultD>::GetRootPath() const
 template<class D, D defaultD>
 inline typename DirectoriesTree<D,defaultD>::NodeType& DirectoriesTree<D, defaultD>::operator[](std::filesystem::path dir)
 {
+    if (!dir.is_absolute())
+    {
+        dir = std::filesystem::absolute(dir);
+    }
     std::filesystem::path rootFolder = _rootNode->_currFolder;
     if (dir.root_path() == rootFolder.root_path())
     {

@@ -10,7 +10,7 @@ int main() {
     
     DirectoriesTree<int,10> dirTree=current_path().parent_path().append("x64").append("Debug");
 
-    auto elm = dirTree[current_path().parent_path().append("x64").append("Debug").append("TestFolder").append("InnerFolder1")];
+    auto elm = dirTree[path().append("TestFolder").append("InnerFolder1")];/*current_path().parent_path().append("x64").append("Debug").append("TestFolder").append("InnerFolder1") * / ];
 
     cout << dirTree.GetRootPath() << endl;
     //dirTree[]
