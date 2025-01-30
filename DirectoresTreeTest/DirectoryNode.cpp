@@ -3,13 +3,15 @@
 using namespace std;
 using namespace std::filesystem;
 
-DirectoryNode::DirectoryNode(std::filesystem::path folder, std::weak_ptr<DirectoryNode> parent)
+/*template<class D, class F>
+DirectoryNode<D,F>::DirectoryNode(std::filesystem::path folder,D data, std::weak_ptr<DirectoryNode> parent)
 {
     _currFolder.assign(folder);
     _parent = parent;
+    _data = data;
 }
-
-DirectoryNode& DirectoryNode::operator[](std::string folderName)
+template<class D, class F>
+DirectoryNode<D,F>& DirectoryNode<D,F>::operator[](std::string folderName)
 {
     if (!_childs.has_value())
     {
@@ -20,7 +22,15 @@ DirectoryNode& DirectoryNode::operator[](std::string folderName)
     return *_childs.value()[folderName];
 }
 
-void DirectoryNode::_LoadChilds()
+template<class D, class F>
+DirectoryNode<D,F>& DirectoryNode<D,F>::operator=(D data)
+{
+    _data = data;
+    return *this;
+}
+
+template<class D, class F>
+void DirectoryNode<D,F>::_LoadChilds()
 {
     std::unordered_map<std::string, std::shared_ptr<DirectoryNode>> childsMap;
     _childs = childsMap;
@@ -33,4 +43,4 @@ void DirectoryNode::_LoadChilds()
             //_childs.value().insert()
         }
     }
-}
+}*/
