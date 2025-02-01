@@ -104,7 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -128,13 +128,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="DirectoresTree.cpp" />
     <ClCompile Include="DirectoresTreeTest.cpp" />
-    <ClCompile Include="DirectoryNode.cpp" />
+    <ClCompile Include="TestDirectoryWatcher.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DirectoresTree.h" />
-    <ClInclude Include="DirectoryNode.h" />
+    <ClInclude Include="TestDirectoryWatcher.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
