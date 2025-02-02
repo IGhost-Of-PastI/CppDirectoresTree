@@ -1,7 +1,15 @@
 #include "TestDirectoryWatcher.h"
 #include <algorithm>
 #include <iostream>
+#include <vector>
+#include <boost/locale.hpp>
+//#include <codecvt>
 
+inline std::string To_UTF8(std::string w1251_str)
+{
+	using namespace boost::locale::conv;
+	return between(w1251_str, "WINDOWS-1251", "UTF-8");
+}
 
 inline void FileSystemListener::_OnFileSystemEvent(efsw::Action action, const std::filesystem::path& path, std::string filename, std::string old_filename)
 {
@@ -36,10 +44,10 @@ void FileSystemListener::AddPredicateCallback(fspath_predicate_t prediacte, fsca
 void FileSystemListener::handleFileAction(efsw::WatchID watchid, const std::string& dir, const std::string& filename, efsw::Action action, std::string oldFilename)
 {
 	using namespace std;
-	cout << endl;
-	cout << filename<<endl;
-	string utf8string = boost::locale::conv::to_utf<char>(filename,"UTF-8");
-	cout << utf8string << endl;
-	cout << endl;
-	_OnFileSystemEvent(action, dir, filename, oldFilename);
+	//using namespace boost::locale::conv;
+	//cout << endl;
+	//cout << filename<<endl;
+	//cout<<boost::locale::conv::between(filename, "WINDOWS-1251", "UTF-8")<<endl;
+	//cout << endl;
+	_OnFileSystemEvent(action, To_UTF8(dir), To_UTF8(filename), To_UTF8(oldFilename));
 }

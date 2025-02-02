@@ -3,6 +3,7 @@
 //#include "DirectoresTree.h"
 #include <Windows.h>
 #include <memory>
+#include <locale>
 #include <thread>
 #include <format>
 #include <functional>
@@ -26,9 +27,10 @@ int main() {
     using namespace std::filesystem;
     using namespace std;
     using namespace efsw;
-       
+      
+    locale::global(locale(""));
     //setlocale(LC_ALL, "");
-    cout << "Новая" << endl;
+    //cout << "Новая" << endl;
 
     const path currentFolder = current_path().parent_path()/"x64"/"Debug";
     string formatedString = format("Главный поток процесса: {}", thisThreadIdToString());
