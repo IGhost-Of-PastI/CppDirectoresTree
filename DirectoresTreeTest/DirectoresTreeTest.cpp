@@ -31,21 +31,21 @@ int main() {
 
     //_rootNode = std::make_shared<NodeType>(rootDir);
 
-    const path currentFolder = current_path().parent_path().append("x64").append("Debug");
+    const path currentFolder = current_path().parent_path()/"x64"/"Debug";
     string formatedString = format("Главный поток процесса: {}", thisThreadIdToString());
     cout << formatedString << endl;
 
     std::function<void(string, string, string)> onModifed = [](string dir, string filename, string oldname) {
-        cout << format("Поток исполнения обработки: {}, Данные изменений: {} / {} >> {}", thisThreadIdToString(),dir,filename,oldname) << endl;
+        cout << format("Поток исполнения обработки: {}, Данные изменений: {} / {} >> {}", thisThreadIdToString(),path(dir),filename,oldname) << endl;
     };
     std::function<void(string, string, string)> onAded = [](string dir, string filename, string oldname) {
-        cout << format("Поток исполнения обработки: {}, Данные добавления: {} / {} >> {}", thisThreadIdToString(), dir, filename, oldname) << endl;
+        cout << format("Поток исполнения обработки: {}, Данные добавления: {} / {} >> {}", thisThreadIdToString(), path(dir), filename, oldname) << endl;
         };
     std::function<void(string, string, string)> onDeleted = [](string dir, string filename, string oldname) {
-        cout << format("Поток исполнения обработки: {}, Данные удаления: {} / {} >> {}", thisThreadIdToString(), dir, filename, oldname) << endl;
+        cout << format("Поток исполнения обработки: {}, Данные удаления: {} / {} >> {}", thisThreadIdToString(), path(dir), filename, oldname) << endl;
         };
     std::function<void(string, string, string)> onMoved = [](string dir, string filename, string oldname) {
-        cout << format("Поток исполнения обработки: {}, Данные перемещения: {} / {} >> {}", thisThreadIdToString(), dir, filename, oldname) << endl;
+        cout << format("Поток исполнения обработки: {}, Данные перемещения: {} / {} >> {}", thisThreadIdToString(), path(dir), filename, oldname) << endl;
         };
 
     const unique_ptr<FileWatcher> fileWatcher = make_unique<FileWatcher>();
@@ -61,18 +61,29 @@ int main() {
         {
             create_directory(path(currentFolder).append("new"));
             cout << "Директория new создана" << endl;
-            rename(path(currentFolder).append("new"), path(currentFolder).append("old"));
-            cout << "Директория new переимнована в old" << endl;
+            create_directory(currentFolder / "Новая");
+            cout << "Директория Новая создана" << endl;
+            rename(currentFolder / "new", currentFolder / "new2");
+            cout << "Директория new переимнована в new2" << endl;
+            rename(currentFolder / "Новая", currentFolder / "Новая2");
+            cout << "Директория Новая переимнована в Новая2" << endl;
+            remove_all(currentFolder/"new2");
+            cout << "Директория new2 удалена" << endl;
+            remove_all(currentFolder / "Новая2");
+            cout << "Директория Новая2 удалена" << endl;
+            //cout << "Директория new создана" << endl;
+            //ююrename(path(currentFolder).append("new"), path(currentFolder).append("old"));
+            //ююcout << "Директория new переимнована в old" << endl;
             isExecuted = true;
         }
         
     }
+    //Провести тесты с русскими названиями папок чтобы они были синхронизированы у вотчера и filesystem, вместо использования пути как строки используй путь файл система
     //Замечания по тестам
     /*
     У директории нет понятия модифайд у него есть понятие перемещения
     Пока по наблюдениям наблюдать всегда видит изменения позже его применения но это не значит что обработчик будет вызван до того как информация о изменении посутп вотчеру
     следвоательно в вотчера должен быть мультимап изменений перед внесением изменений к нему необходимо блокировать доступ, и при изменении записывать утда даныне и особождать, так гаранитровано алогритм ихзменений в директориях успеет оповестить наблюдателя об этом до того как он увидит изменение
-
     */
 
 

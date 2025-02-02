@@ -21,9 +21,15 @@
     <ClCompile Include="DirectoresTreeTest.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="lock_proxy.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TestDirectoryWatcher.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="lock_proxy.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
