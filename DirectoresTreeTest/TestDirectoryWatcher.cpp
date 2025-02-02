@@ -19,7 +19,9 @@ inline void FileSystemListener::_OnFileSystemEvent(efsw::Action action, const st
 	auto element = std::find_if(eventInfoQueue.begin(), eventInfoQueue.end(), [&sample](const EventInfo& eventInf) {return sample == eventInf; });
 	if (element == eventInfoQueue.end()) {
 		for (const auto& [predicate, handler] : _filesystemEntryCallback) {
-			if (predicate(std::filesystem::path(path)/filename)) { 
+			//Значительный недостаток, тогда она не сомждет определить верный предикат, тоесть нужно заготовить варниты предикатов, скорее всгео эжто убдут встреоныне функции
+			bool checkPredicate = (action == efsw::Action::Delete) ? !predicate(std::filesystem::path(path) / filename) : predicate(std::filesystem::path(path) / filename);
+			if (checkPredicate) { 
 				handler(action, path, filename, old_filename); 
 				break;
 			}
