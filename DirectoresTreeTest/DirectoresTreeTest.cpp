@@ -8,7 +8,7 @@
 #include <functional>
 #include <efsw/efsw.hpp>
 #include "TestDirectoryWatcher.h"
-
+#include <boost/describe.hpp>
 using namespace std;
 
 std::string thisThreadIdToString() {
@@ -17,39 +17,34 @@ std::string thisThreadIdToString() {
     return oss.str();
 }
 
+namespace efsw::Actions
+{
+    BOOST_DESCRIBE_ENUM(Action, Add, Delete, Modified, Moved)
+}
+
 int main() {
     using namespace std::filesystem;
     using namespace std;
     using namespace efsw;
-    
-    setlocale(LC_ALL, "");
-    //DirectoriesTree<int> dirTree=current_path().parent_path().append("x64").append("Debug");
-
-    //auto elm = dirTree[current_path().parent_path().append("x64").append("Debug").append("TestFolder").append("InnerFolder1")  ];
-
-    //cout << dirTree.GetRootPath() << endl;
-
-    //_rootNode = std::make_shared<NodeType>(rootDir);
+       
+    //setlocale(LC_ALL, "");
+    cout << "Новая" << endl;
 
     const path currentFolder = current_path().parent_path()/"x64"/"Debug";
     string formatedString = format("Главный поток процесса: {}", thisThreadIdToString());
     cout << formatedString << endl;
 
-    std::function<void(string, string, string)> onModifed = [](string dir, string filename, string oldname) {
-        cout << format("Поток исполнения обработки: {}, Данные изменений: {} / {} >> {}", thisThreadIdToString(),path(dir),filename,oldname) << endl;
-    };
-    std::function<void(string, string, string)> onAded = [](string dir, string filename, string oldname) {
-        cout << format("Поток исполнения обработки: {}, Данные добавления: {} / {} >> {}", thisThreadIdToString(), path(dir), filename, oldname) << endl;
-        };
-    std::function<void(string, string, string)> onDeleted = [](string dir, string filename, string oldname) {
-        cout << format("Поток исполнения обработки: {}, Данные удаления: {} / {} >> {}", thisThreadIdToString(), path(dir), filename, oldname) << endl;
-        };
-    std::function<void(string, string, string)> onMoved = [](string dir, string filename, string oldname) {
-        cout << format("Поток исполнения обработки: {}, Данные перемещения: {} / {} >> {}", thisThreadIdToString(), path(dir), filename, oldname) << endl;
+    std::function<void(efsw::Action, path, string, string)> onDirectoryOps = [](efsw::Action action,const path& path, string filename, string old_filename) {
+        string action_str = boost::describe::enum_to_string<Action>(action, "unknown");
+        cout << format("Поток исполнения обработки: {}, Данные {}: {} / {} >> {}", thisThreadIdToString(), action_str, path.string(), filename, old_filename) << endl;
         };
 
+    //недостатки предиката он использует функцию которая просматривает файловую систему при событии удаления и и перемещения которые исполльзуеються для опознания старого файла уже нет поэтмоу она вернут false
+    std::function<bool(const path&)> dirPredicate = [](const path& path) {return is_directory(path); };
+
     const unique_ptr<FileWatcher> fileWatcher = make_unique<FileWatcher>();
-    const unique_ptr<TestDirectoryListener> directoryListener = make_unique<TestDirectoryListener>(onAded,onDeleted,onModifed,onMoved);
+    const unique_ptr<FileSystemListener> directoryListener = make_unique<FileSystemListener>();
+    directoryListener->AddPredicateCallback(dirPredicate, onDirectoryOps);
     WatcherOption option(efsw::Options::Option::WinBufferSize, 64 * 1024);
     WatchID watchID = fileWatcher->addWatch(currentFolder.string(), directoryListener.get(), true, {option});
     fileWatcher->watch();
@@ -59,7 +54,8 @@ int main() {
     {
         if (!isExecuted)
         {
-            create_directory(path(currentFolder).append("new"));
+            create_directory(currentFolder/"new");
+            cout<<is_directory(currentFolder / "new")<<endl;
             cout << "Директория new создана" << endl;
             create_directory(currentFolder / "Новая");
             cout << "Директория Новая создана" << endl;
@@ -71,9 +67,7 @@ int main() {
             cout << "Директория new2 удалена" << endl;
             remove_all(currentFolder / "Новая2");
             cout << "Директория Новая2 удалена" << endl;
-            //cout << "Директория new создана" << endl;
-            //ююrename(path(currentFolder).append("new"), path(currentFolder).append("old"));
-            //ююcout << "Директория new переимнована в old" << endl;
+
             isExecuted = true;
         }
         

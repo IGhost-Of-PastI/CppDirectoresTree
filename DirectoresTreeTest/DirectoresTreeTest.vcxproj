@@ -129,11 +129,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DirectoresTreeTest.cpp" />
-    <ClCompile Include="lock_proxy.cpp" />
     <ClCompile Include="TestDirectoryWatcher.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="lock_proxy.h" />
     <ClInclude Include="TestDirectoryWatcher.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
