@@ -18,12 +18,12 @@
     <ClCompile Include="TestDirectoryWatcher.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="DirectoresTreeTest.cpp">
+    <ClCompile Include="FileSystemListener.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="TestDirectoryWatcher.h">
+    <ClInclude Include="FileSystemListener.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

@@ -128,11 +128,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="DirectoresTreeTest.cpp" />
+    <ClCompile Include="FileSystemListener.cpp" />
     <ClCompile Include="TestDirectoryWatcher.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="TestDirectoryWatcher.h" />
+    <ClInclude Include="FileSystemListener.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

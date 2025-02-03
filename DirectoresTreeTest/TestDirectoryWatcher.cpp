@@ -1,4 +1,4 @@
-#include "TestDirectoryWatcher.h"
+#include "FileSystemListener.h"
 #include <algorithm>
 #include <iostream>
 #include <vector>
@@ -20,8 +20,8 @@ inline void FileSystemListener::_OnFileSystemEvent(efsw::Action action, const st
 	if (element == eventInfoQueue.end()) {
 		for (const auto& [predicate, handler] : _filesystemEntryCallback) {
 			//Значительный недостаток, тогда она не сомждет определить верный предикат, тоесть нужно заготовить варниты предикатов, скорее всгео эжто убдут встреоныне функции
-			bool checkPredicate = (action == efsw::Action::Delete) ? !predicate(std::filesystem::path(path) / filename) : predicate(std::filesystem::path(path) / filename);
-			if (checkPredicate) { 
+			//bool checkPredicate = (action == efsw::Action::Delete) ? !predicate(std::filesystem::path(path) / filename) : predicate(std::filesystem::path(path) / filename);
+			if (predicate(action,std::filesystem::path(path) / filename)) {
 				handler(action, path, filename, old_filename); 
 				break;
 			}

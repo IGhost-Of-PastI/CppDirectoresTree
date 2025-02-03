@@ -21,7 +21,7 @@ struct EventInfo
 };
 
 using fscallback_t = std::function<void(efsw::Action, const std::filesystem::path&, std::string, std::string)>;
-using fspath_predicate_t = std::function<bool(const std::filesystem::path&)>;
+using fspath_predicate_t = std::function<bool(efsw::Action,const std::filesystem::path&)>;
 using event_info_container_t = std::unordered_map<efsw::Action, std::deque<EventInfo>>;
 
 class FileSystemWatcherEventProxy
